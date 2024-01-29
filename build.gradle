@@ -47,12 +47,21 @@ application {
     mainClass.set("RyanGosling")
 }
 
-shadowJar {
-
-    archiveBaseName = "RyanGosling"
-    archiveClassifier = null
-    dependsOn("distZip", "distTar")
+task copyData(type: Copy) {
+    from 'data'
+    into "${buildDir}/libs"
 }
+
+shadowJar {
+    //configurations = [project.configurations.runtime]
+    mergeServiceFiles()
+    exclude 'data/**'
+    dependsOn copyData
+
+    // Include the 'data' folder and its contents in the JAR
+}
+
+
 
 run{
     standardInput = System.in
