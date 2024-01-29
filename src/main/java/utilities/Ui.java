@@ -15,7 +15,8 @@ public class Ui {
     private Scanner sc = new Scanner(System.in);
     //Handles adding/removing to array of tasks
     private TaskList taskList = new TaskList();
-    private String filePath = "data/task_lists.txt";
+    private String filePath = "task_lists.txt";
+
     //Handles the loading and saving of tasks to text file
     private Storage taskLoader = new Storage(filePath);
 
