@@ -57,3 +57,11 @@ shadowJar {
 run{
     standardInput = System.in
 }
+
+sourceSets {
+    main {
+        resources {
+            srcDirs = ["src/main/resources"]
+        }
+    }
+}
