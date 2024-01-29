@@ -9,7 +9,7 @@ public class Todo extends Task {
 
     public Todo(String taskName, int isTaskDone) {
         super(taskName, "T");
-        super.changeStatus(isTaskDone);
+        changeStatus(isTaskDone);
         super.setTime(new String[] {"NA", "NA"});
     }
 
