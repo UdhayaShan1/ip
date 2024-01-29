@@ -19,25 +19,24 @@ import java.util.regex.Matcher;
  * The Storage class is responsible for loading and saving tasks to/from the hard drive.
  */
 public class Storage {
-    private String filePath;
+    private Path filePath;
 
     public Storage(String filePath) {
-        this.filePath = filePath;
+        this.filePath = Paths.get(filePath);
     }
 
     /**
      * Parses and loads tasks from the hard drive.
      *
      * @return An ArrayList of Task objects representing the loaded tasks.
-     * @throws FileNotFoundException If the file specified by filePath is not found.
+     * @throws IOException If the file specified by filePath is not found.
      * @throws RyanGoslingException  If the task data on the hard drive is not in the expected format.
      */
-    public ArrayList<Task> parseAndLoadTasks() throws FileNotFoundException, RyanGoslingException {
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(filePath);
-        if (inputStream == null) {
+    public ArrayList<Task> parseAndLoadTasks() throws IOException, RyanGoslingException {
+        if (!Files.exists(filePath)) {
             throw new RyanGoslingException("File not found: " + filePath);
         }
-        Scanner scanner = new Scanner(inputStream);
+        Scanner scanner = new Scanner(filePath);
         String pattern = "^\\s*(\\w+)\\s*\\|\\s*(\\w+)\\s*\\|\\s*(.*?)\\s*\\|\\s*(.*?)\\s*\\|\\s*(.*?)\\s*$";
         ArrayList<Task> listOfTasks = new ArrayList<>();
         while (scanner.hasNext()) {
@@ -87,9 +86,7 @@ public class Storage {
             }
         }
         try {
-            FileWriter fw = new FileWriter(this.filePath);
-            fw.write(toAdd.toString());
-            fw.close();
+            Files.write(filePath, toAdd.toString().getBytes());
         } catch (IOException e) {
             System.out.println("Error writing! Weird as f");
         }

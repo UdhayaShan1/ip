@@ -5,6 +5,7 @@ import exceptions.RyanGoslingException;
 import tasks.Task;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -15,7 +16,7 @@ public class Ui {
     private Scanner sc = new Scanner(System.in);
     //Handles adding/removing to array of tasks
     private TaskList taskList = new TaskList();
-    private String filePath = "task_lists.txt";
+    private String filePath = "src/main/resources/task_lists.txt";
 
     //Handles the loading and saving of tasks to text file
     private Storage taskLoader = new Storage(filePath);
@@ -31,6 +32,8 @@ public class Ui {
         } catch (RyanGoslingException | FileNotFoundException e) {
             MessagePrinter.errorPrinter(e);
             return;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
         CommandsParser commandsParser = new CommandsParser(this.taskList, this.filePath, this.taskLoader);
 

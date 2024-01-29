@@ -47,11 +47,17 @@ application {
     mainClass.set("RyanGosling")
 }
 
+jar {
+    manifest {
+        attributes 'RyanGosling': 'RyanGosling'
+    }
+}
+
 shadowJar {
 
     archiveBaseName = "RyanGosling"
-    archiveClassifier = null
-    dependsOn("distZip", "distTar")
+    archiveClassifier.set('')
+    archiveVersion.set('')
 }
 
 run{
