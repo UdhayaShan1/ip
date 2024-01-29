@@ -74,26 +74,24 @@ public class Storage {
      * @param taskList The ArrayList of Task objects to be written to the hard drive.
      */
     public void writeToTaskList(ArrayList<Task> taskList) {
-        Path path = Paths.get(filePath);
-
-        try (BufferedWriter writer = Files.newBufferedWriter(path)) {
-            for (int i = 0; i < taskList.size(); i += 1) {
-                Task taskToAdd = taskList.get(i);
-                writer.write(taskToAdd.getTaskType());
-
-                int taskDone = taskToAdd.isTaskDone() ? 1 : 0;
-                String[] possibleTimes = taskToAdd.getTimes();
-
-                writer.write(" | " + taskDone + " | " + taskToAdd.getTaskName() +
-                                     " | " + possibleTimes[0] + " | " + possibleTimes[1]);
-
-                if (i != taskList.size() - 1) {
-                    writer.newLine();
-                }
+        StringBuilder toAdd = new StringBuilder();
+        for (int i = 0; i < taskList.size(); i += 1) {
+            Task taskToAdd = taskList.get(i);
+            toAdd.append(taskToAdd.getTaskType());
+            int taskDone = taskToAdd.isTaskDone() ? 1 : 0;
+            String[] possibleTimes = taskToAdd.getTimes();
+            toAdd.append(" | ").append(taskDone).append(" | ").append(taskToAdd.getTaskName())
+                    .append(" | ").append(possibleTimes[0]).append(" | ").append(possibleTimes[1]);
+            if (i != taskList.size() - 1) {
+                toAdd.append(System.lineSeparator());
             }
+        }
+        try {
+            FileWriter fw = new FileWriter(this.filePath);
+            fw.write(toAdd.toString());
+            fw.close();
         } catch (IOException e) {
-            System.out.println(e.getMessage());
-            System.out.println("Error writing to the file!");
+            System.out.println("Error writing! Weird as f");
         }
     }
 }
